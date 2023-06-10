@@ -17,8 +17,8 @@ String currentType = "";
 boolean isArray = false;
 
 /* Método auxiliar para crear tokens */
-public Symbol token(int sym) {
-    return new Symbol(sym, yyline, yycolumn);
+private Symbol symbol(int tipo, Object valor) {
+        return new Symbol(tipo, yyline, yycolumn, valor);
 }
 %}
 
@@ -27,9 +27,9 @@ digito= [0-9]
 numero = {digito}+
 palabra = [a-zA-Z]+
 identificador = [a-zA-Z][a-zA-Z0-9]*
-numeroFloat = ^-?\d+(?:.\d+)?$
-numeroDouble= ^-?\d+(?:.\d+)?(?:[eE][+-]?\d+)?$
-numeroEntero = ^-?\d+$
+numeroFloat = "^-?\d+(?:.\d+)?$"
+numeroDouble= "^-?\d+(?:.\d+)?(?:[eE][+-]?\d+)?$"
+numeroEntero = "^-?\d+$"
 Logico = "&" | "&&" | "||" | "!" 
 espacios_blanco = [\r|\n|\r\n| |\t]
 comillas = [""]
@@ -55,15 +55,17 @@ comillas = [""]
 
 "false"         {return symbol(sym.FALSE, yytext());}
 
-{identificador} { System.out.println("Lexema: " + yytext()); return symbol (sym.IDENTIFICADOR, yytext());}
+{identificador} { System.out.println("Lexema: " + yytext()); return symbol(sym.IDENTIFICADOR, yytext());}
 
-{numero}        { System.out.println("Lexema: " + yytext()); return symbol (sym.NUMERO, yytext());}
+{numero}        { System.out.println("Lexema: " + yytext()); return symbol(sym.NUMERO, yytext());}
 
-{numeroFloat}   { System.out.println("Lexema: " + yytext()); return symbol (sym.FLOAT_NUM, yytext());}
+{numeroDouble}  { System.out.println("Lexema: " + yytext()); return symbol(sym.DOUBLE_NUM, yytext());}
 
-{numeroDouble}  { System.out.println("Lexema: " + yytext()); return symbol (sym.DOUBLE_NUM, yytext());}
+{numeroFloat}  { System.out.println("Lexema: " + yytext()); return symbol(sym.DOUBLE_NUM, yytext());}
 
-{numeroEntero}  { System.out.println("Lexema: " + yytext()); return symbol (sym.INT_NUM, yytext());}
+{numeroEntero}  { System.out.println("Lexema: " + yytext()); return symbol(sym.INT_NUM, yytext());}
+
+"array"         { System.out.println("Lexema: " + yytext()); return symbol(sym.ARRAY, yytext());}
 
 {espacios_blanco}   { /*Ignorar estos símbolos*/ }
 
@@ -108,12 +110,6 @@ comillas = [""]
 
 "else"           {System.out.println("Se reconoce lexema: " +yytext());  return symbol(sym.ELSE, yytext());}
 
-"if-else"        {System.out.println("Se reconoce lexema: " +yytext());  return symbol(sym.IF-ELSE, yytext());}
-
-"if-if"          {System.out.println("Se reconoce lexema: " +yytext());  return symbol(sym.IF-IF, yytext());}
-
-"else-else"      {System.out.println("Se reconoce lexema: " +yytext());  return symbol(sym.ELSE-ELSE, yytext());}
-
 "switch"         {System.out.println("Se reconoce lexema: " +yytext());  return symbol(sym.SWITCH, yytext());}
 
 "case"           {System.out.println("Se reconoce lexema: " +yytext());  return symbol(sym.CASE, yytext());}
@@ -124,7 +120,7 @@ comillas = [""]
 
 "}"              {System.out.println("Se reconoce lexema: " +yytext());  return symbol(sym.LLAVE_CIERRA, yytext());}
 
-";"              {System.out.println("Se reconoce lexema: " +yytext());  return symbol(sym.PUNTOYCOMA, yytext());}
+";"              {System.out.println("Se reconoce lexema: " +yytext());  return symbol(sym.PUNTO_Y_COMA, yytext());}
 
 ":"              {System.out.println("Se reconoce lexema: " +yytext());  return symbol(sym.DOS_PUNTOS, yytext());}
 

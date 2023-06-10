@@ -58,8 +58,14 @@
         </dependency>
         <dependency>
             <groupId>com.mycompany</groupId>
-            <artifactId>ProyectSemestre</artifactId>
+            <artifactId>proyectoCup</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>4.7.2</version>
             <type>jar</type>
         </dependency>
     </dependencies>

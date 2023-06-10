@@ -5,12 +5,16 @@
 
 package com.mycompany.proyectsemestre;
 
+import com.mycompany.proyectocup.ProyectoCup;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.FileReader;
+import java.io.Reader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jflex.Main;
+import umg.compiladores.parser;
+import umg.compiladores.Lexer;
+import umg.compiladores.parser;
+
 
 /**
  *
@@ -18,15 +22,24 @@ import jflex.Main;
  */
 public class ProyectSemestre {
 
-    public static void main(String[] args) throws FileNotFoundException  {
-// TODO code application logic here
-          try {
-        FileWriter fileWriter = new FileWriter("output.py");
-        fileWriter.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }    
-   
-    }   
-
+    public static void main(String[] args) throws FileNotFoundException {
+      String javaCode = "/* Código fuente en Java */";
+        String pythonCode = JavaToPythonTranslator.translate(javaCode);
+        System.out.println(pythonCode);
+        try {
+            Reader r = new FileReader("/Users/PC/Desktop/prueba.txt");
+            umg.compiladores.Lexer lex = new umg.compiladores.Lexer(r);
+            parser p = new parser(lex);
+            p.parse();
+        } catch (Exception ex) {
+            Logger.getLogger(ProyectoCup.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
+    } 
 }
+        
+    
+    
+        
+    
+

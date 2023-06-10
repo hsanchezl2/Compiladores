@@ -3,10 +3,15 @@ package umg.compiladores;
 import java_cup.runtime.*;
 
 /* Declaración de símbolos terminales */
-terminal FLOAT, DOUBLE, INT, LONG, SHORT, STRING, BOOLEAN, TRUE, FALSE, IDENTIFICADOR, NUMERO, FLOAT_NUM, DOUBLE_NUM, INT_NUM, SUMA, RESTA, MULTIPLICACION, DIVISION, POTENCIA, PARENTESIS_ABRE, PARENTESIS_CIERRA, MAYOR_QUE, MENOR_QUE, MAYOR_IGUAL, MENOR_IGUAL, IGUAL, DIFERENTE, Y, O, NEGACION, IF, ELSE, IF-ELSE, IF-IF, ELSE-ELSE, SWITCH, CASE, DEFAULT, LLAVE_ABRE, LLAVE_CIERRA, PUNTOYCOMA, DOS_PUNTOS, PUNTO, FOR, WHILE, DO, SYSTEM, OUT, PRINTLN;
+terminal FLOAT, DOUBLE, INT, LONG, SHORT, STRING, BOOLEAN, TRUE, FALSE, IDENTIFICADOR, NUMERO, FLOAT_NUM, DOUBLE_NUM, INT_NUM, SUMA, RESTA, MULTIPLICACION, DIVISION, POTENCIA, PARENTESIS_ABRE, PARENTESIS_CIERRA, MAYOR_QUE, MENOR_QUE, MAYOR_IGUAL, MENOR_IGUAL, IGUAL, DIFERENTE, Y, O, NEGACION, IF, ELSE, SWITCH, CASE, DEFAULT, LLAVE_ABRE, LLAVE_CIERRA, PUNTO_Y_COMA, DOS_PUNTOS, PUNTO, FOR, WHILE, DO, SYSTEM, OUT, PRINTLN;
 
 /* Declaración de símbolos no terminales */
-non terminal Expresion;
+no terminal Expresion, Expresion_list;
+
+/* Precendencia de operadores
+precedence left SUMA, RESTA;
+precedence left MULTIPLICACION;
+
 
 /* Definición de reglas de producción */
 Expresion ::= FLOAT
@@ -23,33 +28,67 @@ Expresion ::= FLOAT
              | FLOAT_NUM
              | DOUBLE_NUM
              | INT_NUM
-             | Expresion SUMA Expresion
+
+Expresion:: = PARENTESIS_ABRE Expresion PARENTESIS_CIERRA
+             | ARRAY PARENTESIS_ABRE Expresion PARENTESIS_CIERRA
+;
+
+Expresion::= Expresion 
+             | TRUE
+             | FALSE
+;
+
+Expresion::= NUMERO 
+             | IDENTIFICADOR
+;
+
+/*Aritmetica
+Expresion::= | Expresion SUMA Expresion
              | Expresion RESTA Expresion
              | Expresion MULTIPLICACION Expresion
              | Expresion DIVISION Expresion
              | Expresion POTENCIA Expresion
              | PARENTESIS_ABRE Expresion PARENTESIS_CIERRA
-             | Expresion MAYOR_QUE Expresion
+             | NUMERO
+;
+
+/*Relacionales
+Expresion::= | Expresion MAYOR_QUE Expresion
              | Expresion MENOR_QUE Expresion
              | Expresion MAYOR_IGUAL Expresion
              | Expresion MENOR_IGUAL Expresion
              | Expresion IGUAL Expresion
              | Expresion DIFERENTE Expresion
+;
+
+/*lógicas 
              | Expresion Y Expresion
              | Expresion O Expresion
              | NEGACION Expresion
-             | IF Expresion LLAVE_ABRE Expresion LLAVE_CIERRA
+;
+
+/*Estructuras selectivas
+Expresion::= | IF Expresion LLAVE_ABRE Expresion LLAVE_CIERRA
              | IF Expresion LLAVE_ABRE Expresion LLAVE_CIERRA ELSE LLAVE_ABRE Expresion LLAVE_CIERRA
-             | IF Expresion LLAVE_ABRE Expresion LLAVE_CIERRA IF LLAVE_ABRE Expresion LLAVE_CIERRA
-             | ELSE LLAVE_ABRE Expresion LLAVE_CIERRA ELSE LLAVE_ABRE Expresion LLAVE_CIERRA
+             | IF Expresion LLAVE_ABRE Expresion LLAVE_CIERRA IF LLAVE_ABRE Expresion LLAVE_CIERRA ELSE LLAVE_ABRE Expresion LLAVE_CIERRA
+             | IF Expresion LLAVE_ABRE Expresion LLAVE_CIERRA IF LLAVE_ABRE Expresion LLAVE_CIERRA ELSE LLAVE_ABRE Expresion LLAVE_CIERRA ELSE LLAVE_ABRE Expresion LLAVE_CIERRA
              | SWITCH Expresion LLAVE_ABRE Expresion LLAVE_CIERRA
              | CASE Expresion DOS_PUNTOS Expresion
              | DEFAULT DOS_PUNTOS Expresion
              | Expresion PUNTO Expresion
-             | FOR PARENTESIS_ABRE Expresion PUNTOYCOMA Expresion PUNTOYCOMA Expresion PARENTESIS_CIERRA LLAVE_ABRE Expresion LLAVE_CIERRA
+;
+
+/*Estructuras repetitivas
+Expresion::= | FOR PARENTESIS_ABRE Expresion PUNTOYCOMA Expresion PUNTOYCOMA Expresion PARENTESIS_CIERRA LLAVE_ABRE Expresion LLAVE_CIERRA
              | WHILE PARENTESIS_ABRE Expresion PARENTESIS_CIERRA LLAVE_ABRE Expresion LLAVE_CIERRA
              | DO LLAVE_ABRE Expresion LLAVE_CIERRA WHILE PARENTESIS_ABRE Expresion PARENTESIS_CIERRA PUNTOYCOMA
-             | SYSTEM PUNTO OUT PUNTO PRINTLN PARENTESIS_ABRE Expresion PARENTESIS_CIERRA PUNTOYCOMA;
+             | SYSTEM PUNTO OUT PUNTO PRINTLN PARENTESIS_ABRE Expresion PARENTESIS_CIERRA PUNTO_Y_COMA
+;
+
+Expresion::= | SYSTEM PUNTO OUT PUNTO PRINTLN PARENTESIS_ABRE Expresion PARENTESIS_CIERRA PUNTOYCOMA
+;
 
 /* Acciones semánticas */
-action {: System.out.println("Se reconoce lexema: " + yytext()); :} ;
+action {: System.out.println("Se reconoce lexema: " + yytext()); :} 
+
+;
